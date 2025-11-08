@@ -43,3 +43,10 @@ A JSON array of event names that must be observed at least once in the range:
 - Unknown topics (if any) with a small sample  
 - Required events check status  
 - Exit code 0 when clean, 2 if unknown topics or a required event is missing
+
+# Notes
+- This tool validates emitted event topics against the ABI; it does not perform source-code or storage verification.  
+- For proxies, run against the proxy if it emits events, or the implementation if events are forwarded there.  
+- For Aztec/Zama deployments, this helps detect ABI drift or unexpected interface expansions after upgrades.  
+- Provider rate limits vary; adjust `--step` to avoid “query too large” errors.  
+- Use a fixed range for reproducible audits in CI (e.g., nightly checks at finalized blocks).
