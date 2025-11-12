@@ -45,11 +45,9 @@ def chunk_ranges(start: int, end: int, step: int) -> List[Tuple[int, int]]:
     return ranges
 
 def fetch_logs(w3: Web3, address: str, from_block: int, to_block: int, step: int) -> List[Dict[str, Any]]:
-    """
-    Fetch logs for address across [from_block, to_block] in chunks to avoid provider limits.
-    """
     all_logs: List[Dict[str, Any]] = []
     for a, b in chunk_ranges(from_block, to_block, step):
+        print(f"🔎 Fetching logs {a} → {b} ...")   # 👈 add this line
         logs = w3.eth.get_logs({
             "address": Web3.to_checksum_address(address),
             "fromBlock": a,
@@ -57,7 +55,6 @@ def fetch_logs(w3: Web3, address: str, from_block: int, to_block: int, step: int
         })
         all_logs.extend(logs)
     return all_logs
-
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
         description="event-soundness — verify event topics emitted by a contract over a block range match an ABI (useful for Aztec/Zama bridges, rollups, and general Web3 soundness checks)."
